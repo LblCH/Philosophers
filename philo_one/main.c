@@ -36,15 +36,6 @@ int 	main(int argc, char **argv)
 		return (0);
 	}
 	init_all(&phils, argv);
-//	t_phil *phil;
-//	phil = phils.first;
-//	for (int i = 0; i < phils.n_of_philo; i++)
-//	{
-//		printf("# of phil - %d\n phil status - %d\n n_of_eats - %d\n", \
-//			phil->num, phil->status, phil->n_of_eats);
-//		phil = phil->next;
-//		(phil == phils.first) ? phil = NULL : 0;
-//	}
 	start_threads(&phils);
 	pthread_mutex_lock(&phils.mutex);
 	pthread_mutex_unlock(&phils.mutex);

@@ -36,6 +36,7 @@ typedef struct		s_phils
 	pthread_mutex_t	mutex;
 	int				n_of_philo;
 	int 			dead;
+	int				feeded;
 	int				time_to_die;
 	int 			time_to_eat;
 	int 			time_to_sleep;

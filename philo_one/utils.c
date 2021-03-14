@@ -52,7 +52,7 @@ void		mutex_print(t_phil *phil, int time)
 
 	start = phil->phils->start;
 	pthread_mutex_lock(&time_mutex);
-	if (phil->phils->dead == 1)
+	if (phil->phils->dead == 1 || phil->phils->feeded == 1)
 		return ;
 	else if (phil->status == 0)
 		printf("%dms Philo %d starts thinking.\n", time - start, phil->num);

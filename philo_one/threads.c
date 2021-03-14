@@ -1,5 +1,28 @@
 #include "philo_one.h"
 
+int		feeding(t_phils *phils, t_phil *phil, int feeded)
+{
+	if (!phil->feeded)
+	{
+		pthread_mutex_lock(&phil->mutex);
+		if (phil->n_of_eats == phils->n_of_eats)
+		{
+			phil->feeded = 1;
+			feeded++;
+		}
+		pthread_mutex_unlock(&phil->mutex);
+	}
+	if (feeded == phils->n_of_philo)
+	{
+		pthread_mutex_lock(&time_mutex);
+		phils->feeded = 1;
+		pthread_mutex_unlock(&time_mutex);
+		pthread_mutex_unlock(&phils->mutex);
+		printf("%dms Feeded\n", get_time() - phils->start);
+	}
+	return (feeded);
+}
+
 void	*eat_check(void *phils1)
 {
 	int		feeded;
@@ -12,21 +35,8 @@ void	*eat_check(void *phils1)
 	pthread_mutex_lock(&phils->mutex);
 	while (phil->prev->status != DEAD)
 	{
-		if (!phil->feeded)
-		{
-			pthread_mutex_lock(&phil->mutex);
-			if (phil->n_of_eats == phils->n_of_eats)
-			{
-				phil->feeded = 1;
-				feeded++;
-			}
-			pthread_mutex_unlock(&phil->mutex);
-		}
-		if (feeded == phils->n_of_philo)
-		{
-			pthread_mutex_unlock(&phils->mutex);
+		if ((feeded = feeding(phils, phil, feeded)) == phils->n_of_philo)
 			return (NULL);
-		}
 		if ((get_time() - phil->time_of_eat) > \
 			phils->time_to_die && phil->status != EAT && phil->status != SLEEP)
 		{

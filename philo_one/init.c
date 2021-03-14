@@ -39,6 +39,7 @@ void 			init_all(t_phils *phils, char **argv)
 	pthread_mutex_init(&phils->mutex, NULL);
 	pthread_mutex_init(&time_mutex, NULL);
 	phils->dead = 0;
+	phils->feeded = 0;
 	if (!(phil = (t_phil *)malloc(sizeof (struct s_phil))))
 		exit(11);
 	phils->first = phil;
