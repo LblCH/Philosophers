@@ -45,3 +45,24 @@ int 		get_time()
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
+
+void		mutex_print(t_phil *phil, int time)
+{
+	int start;
+
+	start = phil->phils->start;
+	pthread_mutex_lock(&time_mutex);
+	if (phil->phils->dead == 1)
+		return ;
+	else if (phil->status == 0)
+		printf("%dms Philo %d starts thinking.\n", time - start, phil->num);
+	else if (phil->status == 1)
+		printf("%dms Philo %d takes fork.\n", time - start, phil->num);
+	else if (phil->status == 2)
+		printf("%dms Philo %d starts eating %d time.\n", time - start, phil->num, phil->n_of_eats + 1);
+	else if (phil->status == 3)
+		printf("%dms Philo %d starts sleeping.\n", time - start, phil->num);
+	else if (phil->status == 4)
+		printf("%dms Philo %d DEAD!!!.\n", time - start, phil->num);
+	pthread_mutex_unlock(&time_mutex);
+}
