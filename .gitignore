@@ -1,0 +1,6 @@
+/cmake-build-debug
+*.out
+/.idea
+CMakeLists.txt
+philo_one
+*.o
