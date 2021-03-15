@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ztawanna <ztawanna@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/15 22:32:44 by ztawanna          #+#    #+#             */
+/*   Updated: 2021/03/15 22:38:53 by ztawanna         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_one.h"
 
 int			ft_isspace(char c)
@@ -38,7 +50,7 @@ int			ft_atoi(const char *str)
 	return (res * sign);
 }
 
-int 		get_time()
+int			get_time(void)
 {
 	static struct timeval	tv;
 
@@ -51,7 +63,7 @@ void		mutex_print(t_phil *phil, int time)
 	int start;
 
 	start = phil->phils->start;
-	pthread_mutex_lock(&time_mutex);
+	pthread_mutex_lock(&g_time_mutex);
 	if (phil->phils->dead == 1 || phil->phils->feeded == 1)
 		return ;
 	else if (phil->status == 0)
@@ -59,10 +71,31 @@ void		mutex_print(t_phil *phil, int time)
 	else if (phil->status == 1)
 		printf("%dms Philo %d takes fork.\n", time - start, phil->num);
 	else if (phil->status == 2)
-		printf("%dms Philo %d starts eating %d time.\n", time - start, phil->num, phil->n_of_eats + 1);
+		printf("%dms Philo %d starts eating %d time.\n", time - start, \
+											phil->num, phil->n_of_eats + 1);
 	else if (phil->status == 3)
 		printf("%dms Philo %d starts sleeping.\n", time - start, phil->num);
 	else if (phil->status == 4)
 		printf("%dms Philo %d DEAD!!!.\n", time - start, phil->num);
-	pthread_mutex_unlock(&time_mutex);
+	pthread_mutex_unlock(&g_time_mutex);
+}
+
+void		ft_clear(t_phils *phils)
+{
+	int		i;
+	t_phil	*phil;
+	t_phil	*temp;
+
+	i = 0;
+	pthread_mutex_destroy(&phils->mutex);
+	phil = phils->first;
+	while (phil && i++ < phils->n_of_philo)
+	{
+		temp = phil->next;
+		pthread_mutex_destroy(&phil->mutex);
+		pthread_mutex_destroy(&phil->mutex_f);
+		free(phil);
+		phil = NULL;
+		phil = temp;
+	}
 }

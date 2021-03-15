@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   threads.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ztawanna <ztawanna@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/15 22:32:54 by ztawanna          #+#    #+#             */
+/*   Updated: 2021/03/15 23:52:18 by ztawanna         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_one.h"
 
 int		feeding(t_phils *phils, t_phil *phil, int feeded)
@@ -14,9 +26,9 @@ int		feeding(t_phils *phils, t_phil *phil, int feeded)
 	}
 	if (feeded == phils->n_of_philo)
 	{
-		pthread_mutex_lock(&time_mutex);
+		pthread_mutex_lock(&g_time_mutex);
 		phils->feeded = 1;
-		pthread_mutex_unlock(&time_mutex);
+		pthread_mutex_unlock(&g_time_mutex);
 		pthread_mutex_unlock(&phils->mutex);
 		printf("%dms Feeded\n", get_time() - phils->start);
 	}
@@ -38,13 +50,12 @@ void	*eat_check(void *phils1)
 		if ((feeded = feeding(phils, phil, feeded)) == phils->n_of_philo)
 			return (NULL);
 		if ((get_time() - phil->time_of_eat) > \
-			phils->time_to_die && phil->status != EAT && phil->status != SLEEP)
+			phils->time_to_die && phil->status != EAT)
 		{
 			pthread_mutex_lock(&phil->mutex);
 			phil->status = DEAD;
 			mutex_print(phil, get_time());
 			phils->dead = 1;
-			pthread_mutex_unlock(&phil->mutex);
 			pthread_mutex_unlock(&phils->mutex);
 			return (NULL);
 		}
@@ -53,7 +64,7 @@ void	*eat_check(void *phils1)
 	return (NULL);
 }
 
-void		eat(t_phil *phil)
+void	eat(t_phil *phil)
 {
 	pthread_mutex_lock(&phil->prev->mutex_f);
 	phil->status = FORKED;
@@ -62,8 +73,8 @@ void		eat(t_phil *phil)
 	mutex_print(phil, get_time());
 	phil->status = EAT;
 	mutex_print(phil, get_time());
-	usleep(1000 * phil->phils->time_to_eat);
 	phil->time_of_eat = get_time();
+	usleep(1000 * phil->phils->time_to_eat);
 	pthread_mutex_lock(&phil->mutex);
 	phil->n_of_eats++;
 	pthread_mutex_unlock(&phil->mutex);
@@ -71,7 +82,7 @@ void		eat(t_phil *phil)
 	pthread_mutex_unlock(&phil->prev->mutex_f);
 }
 
-void 	*phil_life(void *phil1)
+void	*phil_life(void *phil1)
 {
 	t_phil	*phil;
 
