@@ -4,3 +4,5 @@
 CMakeLists.txt
 philo_one
 *.o
+/socrates
+*/*.dSYM
