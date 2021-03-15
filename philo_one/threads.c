@@ -6,7 +6,7 @@
 /*   By: ztawanna <ztawanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 22:32:54 by ztawanna          #+#    #+#             */
-/*   Updated: 2021/03/15 23:52:18 by ztawanna         ###   ########.fr       */
+/*   Updated: 2021/03/16 00:17:22 by ztawanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		feeding(t_phils *phils, t_phil *phil, int feeded)
 		phils->feeded = 1;
 		pthread_mutex_unlock(&g_time_mutex);
 		pthread_mutex_unlock(&phils->mutex);
-		printf("%dms Feeded\n", get_time() - phils->start);
+		printf("%d ms Feeded\n", get_time() - phils->start);
 	}
 	return (feeded);
 }
@@ -74,7 +74,7 @@ void	eat(t_phil *phil)
 	phil->status = EAT;
 	mutex_print(phil, get_time());
 	phil->time_of_eat = get_time();
-	usleep(1000 * phil->phils->time_to_eat);
+	skip_time(phil->phils->time_to_eat);
 	pthread_mutex_lock(&phil->mutex);
 	phil->n_of_eats++;
 	pthread_mutex_unlock(&phil->mutex);
@@ -94,7 +94,7 @@ void	*phil_life(void *phil1)
 		eat(phil);
 		phil->status = SLEEP;
 		mutex_print(phil, get_time());
-		usleep(1000 * phil->phils->time_to_sleep);
+		skip_time(phil->phils->time_to_sleep);
 	}
 	return (NULL);
 }

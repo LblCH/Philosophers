@@ -6,7 +6,7 @@
 /*   By: ztawanna <ztawanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 22:32:44 by ztawanna          #+#    #+#             */
-/*   Updated: 2021/03/15 22:38:53 by ztawanna         ###   ########.fr       */
+/*   Updated: 2021/03/16 00:24:21 by ztawanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,35 +67,24 @@ void		mutex_print(t_phil *phil, int time)
 	if (phil->phils->dead == 1 || phil->phils->feeded == 1)
 		return ;
 	else if (phil->status == 0)
-		printf("%dms Philo %d starts thinking.\n", time - start, phil->num);
+		printf("%d ms Philo %d starts thinking.\n", time - start, phil->num);
 	else if (phil->status == 1)
-		printf("%dms Philo %d takes fork.\n", time - start, phil->num);
+		printf("%d ms Philo %d takes fork.\n", time - start, phil->num);
 	else if (phil->status == 2)
-		printf("%dms Philo %d starts eating %d time.\n", time - start, \
+		printf("%d ms Philo %d starts eating %d time.\n", time - start, \
 											phil->num, phil->n_of_eats + 1);
 	else if (phil->status == 3)
-		printf("%dms Philo %d starts sleeping.\n", time - start, phil->num);
+		printf("%d ms Philo %d starts sleeping.\n", time - start, phil->num);
 	else if (phil->status == 4)
-		printf("%dms Philo %d DEAD!!!.\n", time - start, phil->num);
+		printf("%d ms Philo %d DEAD!!!.\n", time - start, phil->num);
 	pthread_mutex_unlock(&g_time_mutex);
 }
 
-void		ft_clear(t_phils *phils)
+void		skip_time(int sleep)
 {
-	int		i;
-	t_phil	*phil;
-	t_phil	*temp;
+	int time;
 
-	i = 0;
-	pthread_mutex_destroy(&phils->mutex);
-	phil = phils->first;
-	while (phil && i++ < phils->n_of_philo)
-	{
-		temp = phil->next;
-		pthread_mutex_destroy(&phil->mutex);
-		pthread_mutex_destroy(&phil->mutex_f);
-		free(phil);
-		phil = NULL;
-		phil = temp;
-	}
+	time = get_time();
+	while ((get_time() - time) < sleep)
+		usleep(100);
 }

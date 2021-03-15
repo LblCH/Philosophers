@@ -6,13 +6,13 @@
 /*   By: ztawanna <ztawanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 22:33:05 by ztawanna          #+#    #+#             */
-/*   Updated: 2021/03/15 22:59:27 by ztawanna         ###   ########.fr       */
+/*   Updated: 2021/03/16 01:37:52 by ztawanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-static void		init_phils(t_phils *phils, t_phil *phil)
+static int	init_phils(t_phils *phils, t_phil *phil)
 {
 	int i;
 
@@ -29,20 +29,50 @@ static void		init_phils(t_phils *phils, t_phil *phil)
 		pthread_mutex_init(&phil->mutex_f, NULL);
 		if (i < phils->n_of_philo)
 		{
-			(!(phil->next = (t_phil *)malloc(sizeof(struct s_phil)))) ? \
-																exit(11) : 0;
+			if (!(phil->next = (t_phil *)malloc(sizeof(struct s_phil))))
+				return (1);
 			phil->next->prev = phil;
 			phil = phil->next;
 		}
 	}
 	phil->next = phils->first;
 	phils->first->prev = phil;
+	return (0);
 }
 
-void			init_all(t_phils *phils, char **argv)
+static int	check_args(char **argv)
+{
+	int i;
+	int j;
+
+	i = 1;
+	while (argv[i])
+	{
+		j = 0;
+		if (!argv[i][j])
+			return (1);
+		while (argv[i][j])
+		{
+			if (j > 8)
+			{
+				printf("Philos dont eats/sleeps/starves so long. \n");
+				return (1);
+			}
+			if (argv[i][j] < '0' || argv[i][j] > '9')
+				return (1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
+int			init_all(t_phils *phils, char **argv)
 {
 	struct s_phil *phil;
 
+	if (check_args(argv))
+		return (1);
 	phils->n_of_philo = ft_atoi(argv[1]);
 	phils->time_to_die = ft_atoi(argv[2]);
 	phils->time_to_eat = ft_atoi(argv[3]);
@@ -53,7 +83,9 @@ void			init_all(t_phils *phils, char **argv)
 	phils->dead = 0;
 	phils->feeded = 0;
 	if (!(phil = (t_phil *)malloc(sizeof(struct s_phil))))
-		exit(11);
+		return (1);
 	phils->first = phil;
-	init_phils(phils, phil);
+	if (init_phils(phils, phil))
+		return (1);
+	return (0);
 }

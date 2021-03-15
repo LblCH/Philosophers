@@ -6,7 +6,7 @@
 /*   By: ztawanna <ztawanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 22:33:15 by ztawanna          #+#    #+#             */
-/*   Updated: 2021/03/15 22:56:11 by ztawanna         ###   ########.fr       */
+/*   Updated: 2021/03/16 01:10:22 by ztawanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,13 @@ typedef struct		s_phils
 	int				n_of_eats;
 }					t_phils;
 
+void				skip_time(int sleep);
 void				ft_clear(t_phils *phils);
 void				*phil_life(void *phil);
 void				mutex_print(t_phil *phil, int time);
 void				*eat_check(void *phils);
 int					get_time(void);
-void				init_all(t_phils *phils, char **argv);
+int					init_all(t_phils *phils, char **argv);
 int					ft_atoi(const char *str);
 
 #endif
