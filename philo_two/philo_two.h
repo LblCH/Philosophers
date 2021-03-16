@@ -6,7 +6,7 @@
 /*   By: ztawanna <ztawanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 22:33:15 by ztawanna          #+#    #+#             */
-/*   Updated: 2021/03/16 01:10:22 by ztawanna         ###   ########.fr       */
+/*   Updated: 2021/03/16 04:23:13 by ztawanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <pthread.h>
 # include <sys/time.h>
 # include <unistd.h>
+# include <semaphore.h>
 
 # define THINK 0
 # define FORKED 1
@@ -25,7 +26,6 @@
 # define SLEEP 3
 # define DEAD 4
 
-pthread_mutex_t		g_time_mutex;
 
 typedef struct		s_phil
 {
@@ -34,9 +34,8 @@ typedef struct		s_phil
 	int				feeded;
 	int				n_of_eats;
 	int				time_of_eat;
+	sem_t			*sem;
 	struct s_phils	*phils;
-	pthread_mutex_t	mutex_f;
-	pthread_mutex_t	mutex;
 	struct s_phil	*prev;
 	struct s_phil	*next;
 }					t_phil;
@@ -44,8 +43,10 @@ typedef struct		s_phil
 typedef struct		s_phils
 {
 	t_phil			*first;
+	sem_t			*sem_end;
+	sem_t			*sem_write;
+	sem_t			*sem_forks;
 	int				start;
-	pthread_mutex_t	mutex;
 	int				n_of_philo;
 	int				dead;
 	int				feeded;
@@ -55,6 +56,7 @@ typedef struct		s_phils
 	int				n_of_eats;
 }					t_phils;
 
+sem_t				*open_sem(char const *name, int n);
 void				skip_time(int sleep);
 void				ft_clear(t_phils *phils);
 void				*phil_life(void *phil);

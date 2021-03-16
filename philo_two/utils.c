@@ -6,7 +6,7 @@
 /*   By: ztawanna <ztawanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 22:32:44 by ztawanna          #+#    #+#             */
-/*   Updated: 2021/03/16 00:24:21 by ztawanna         ###   ########.fr       */
+/*   Updated: 2021/03/16 01:46:47 by ztawanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void		mutex_print(t_phil *phil, int time)
 	int start;
 
 	start = phil->phils->start;
-	pthread_mutex_lock(&g_time_mutex);
+	sem_wait(phil->phils->sem_write);
 	if (phil->phils->dead == 1 || phil->phils->feeded == 1)
 		return ;
 	else if (phil->status == 0)
@@ -77,7 +77,7 @@ void		mutex_print(t_phil *phil, int time)
 		printf("%d ms Philo %d starts sleeping.\n", time - start, phil->num);
 	else if (phil->status == 4)
 		printf("%d ms Philo %d DEAD!!!.\n", time - start, phil->num);
-	pthread_mutex_unlock(&g_time_mutex);
+	sem_post(phil->phils->sem_write);
 }
 
 void		skip_time(int sleep)

@@ -6,7 +6,7 @@
 /*   By: ztawanna <ztawanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 22:33:00 by ztawanna          #+#    #+#             */
-/*   Updated: 2021/03/16 00:24:37 by ztawanna         ###   ########.fr       */
+/*   Updated: 2021/03/16 01:46:47 by ztawanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ int		main(int argc, char **argv)
 		return (0);
 	}
 	start_threads(&phils);
-	pthread_mutex_lock(&phils.mutex);
-	pthread_mutex_unlock(&phils.mutex);
+	sem_wait(phils.sem_end);
 	ft_clear(&phils);
 	return (0);
 }
@@ -63,13 +62,10 @@ void	ft_clear(t_phils *phils)
 	t_phil	*temp;
 
 	i = 0;
-	pthread_mutex_destroy(&phils->mutex);
 	phil = phils->first;
 	while (phil && i++ < phils->n_of_philo)
 	{
 		temp = phil->next;
-		pthread_mutex_destroy(&phil->mutex);
-		pthread_mutex_destroy(&phil->mutex_f);
 		free(phil);
 		phil = NULL;
 		phil = temp;
