@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 
 LIBS = -lphtread
 
-SRCS = main.c utils.c threads.c init.c
+SRCS = main.c utils.c threads.c init.c ft_itoa.c ft_strjoin.c
 
 OBJS = $(SRCS:.c=.o)
 

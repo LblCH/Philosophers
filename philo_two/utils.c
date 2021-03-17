@@ -6,7 +6,7 @@
 /*   By: ztawanna <ztawanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 22:32:44 by ztawanna          #+#    #+#             */
-/*   Updated: 2021/03/16 01:46:47 by ztawanna         ###   ########.fr       */
+/*   Updated: 2021/03/17 14:16:40 by ztawanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void		mutex_print(t_phil *phil, int time)
 		printf("%d ms Philo %d takes fork.\n", time - start, phil->num);
 	else if (phil->status == 2)
 		printf("%d ms Philo %d starts eating %d time.\n", time - start, \
-											phil->num, phil->n_of_eats + 1);
+											phil->num, phil->n_of_eats);
 	else if (phil->status == 3)
 		printf("%d ms Philo %d starts sleeping.\n", time - start, phil->num);
 	else if (phil->status == 4)

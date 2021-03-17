@@ -6,7 +6,7 @@
 /*   By: ztawanna <ztawanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 22:32:54 by ztawanna          #+#    #+#             */
-/*   Updated: 2021/03/16 08:42:07 by ztawanna         ###   ########.fr       */
+/*   Updated: 2021/03/17 13:42:14 by ztawanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	*eat_check(void *phils1)
 	{
 		if ((feeded = feeding(phils, phil, feeded)) == phils->n_of_philo)
 			return (NULL);
-
 		if ((get_time() - phil->time_of_eat) > \
 			phils->time_to_die && phil->status != EAT)
 		{
@@ -69,16 +68,14 @@ void	eat(t_phil *phil)
 	mutex_print(phil, get_time());
 	sem_wait(phil->phils->sem_forks);
 	mutex_print(phil, get_time());
+	sem_wait(phil->sem);
+	phil->n_of_eats++;
 	phil->status = EAT;
+	sem_post(phil->sem);
 	mutex_print(phil, get_time());
 	phil->time_of_eat = get_time();
 	skip_time(phil->phils->time_to_eat);
-	printf("eated\n");
-	sem_wait(phil->sem);
-	phil->n_of_eats++;
-	sem_post(phil->sem);
 	sem_post(phil->phils->sem_forks);
-	printf("sem returned\n");
 	sem_post(phil->phils->sem_forks);
 }
 

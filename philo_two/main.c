@@ -6,7 +6,7 @@
 /*   By: ztawanna <ztawanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 22:33:00 by ztawanna          #+#    #+#             */
-/*   Updated: 2021/03/16 01:46:47 by ztawanna         ###   ########.fr       */
+/*   Updated: 2021/03/17 14:57:50 by ztawanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,21 @@ void	ft_clear(t_phils *phils)
 	int		i;
 	t_phil	*phil;
 	t_phil	*temp;
+	char	*str;
 
 	i = 0;
 	phil = phils->first;
 	while (phil && i++ < phils->n_of_philo)
 	{
 		temp = phil->next;
+		str = get_sem_name(i);
+		sem_unlink(str);
+		free(str);
 		free(phil);
 		phil = NULL;
 		phil = temp;
 	}
+	sem_unlink("END_SEM");
+	sem_unlink("WRITE_SEM");
+	sem_unlink("FORKS_SEM");
 }

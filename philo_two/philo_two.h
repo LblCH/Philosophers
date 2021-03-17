@@ -6,12 +6,12 @@
 /*   By: ztawanna <ztawanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 22:33:15 by ztawanna          #+#    #+#             */
-/*   Updated: 2021/03/16 04:23:13 by ztawanna         ###   ########.fr       */
+/*   Updated: 2021/03/17 14:41:40 by ztawanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHERS_PHILO_ONE_H
-# define PHILOSOPHERS_PHILO_ONE_H
+#ifndef PHILOSOPHERS_PHILO_TWO_H
+# define PHILOSOPHERS_PHILO_TWO_H
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -25,7 +25,6 @@
 # define EAT 2
 # define SLEEP 3
 # define DEAD 4
-
 
 typedef struct		s_phil
 {
@@ -56,6 +55,9 @@ typedef struct		s_phils
 	int				n_of_eats;
 }					t_phils;
 
+char				*get_sem_name(int i);
+char				*ft_strjoin(char const *s1, char const *s2);
+char				*ft_itoa(int n);
 sem_t				*open_sem(char const *name, int n);
 void				skip_time(int sleep);
 void				ft_clear(t_phils *phils);
