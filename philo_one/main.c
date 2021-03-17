@@ -37,7 +37,7 @@ int		start_threads(t_phils *phils)
 
 int		main(int argc, char **argv)
 {
-	t_phils	phils;
+	t_phils phils;
 
 	if (argc < 5 || argc > 6)
 	{
@@ -49,7 +49,11 @@ int		main(int argc, char **argv)
 		printf("Error: incorrect arguments.\n");
 		return (0);
 	}
-	start_threads(&phils);
+	if (start_threads(&phils))
+	{
+		printf("Error: threads creating error.\n");
+		return (0);
+	}
 	pthread_mutex_lock(&phils.mutex);
 	pthread_mutex_unlock(&phils.mutex);
 	ft_clear(&phils);

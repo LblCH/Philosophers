@@ -6,7 +6,7 @@
 /*   By: ztawanna <ztawanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 22:33:00 by ztawanna          #+#    #+#             */
-/*   Updated: 2021/03/17 18:55:53 by ztawanna         ###   ########.fr       */
+/*   Updated: 2021/03/17 18:59:39 by ztawanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,14 @@ int		main(int argc, char **argv)
 	}
 	if (init_all(&phils, argv))
 	{
-		printf("Error: incorrect arguments.\n");
+		printf("Error: incorrect arguments or init error.\n");
 		return (0);
 	}
-	start_threads(&phils);
+	if (start_threads(&phils))
+	{
+		printf("Error: thread creating error.\n");
+		return (0);
+	}
 	sem_wait(phils.sem_end);
 	ft_clear(&phils);
 	return (0);

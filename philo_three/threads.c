@@ -6,7 +6,7 @@
 /*   By: ztawanna <ztawanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 22:32:54 by ztawanna          #+#    #+#             */
-/*   Updated: 2021/03/17 18:39:20 by ztawanna         ###   ########.fr       */
+/*   Updated: 2021/03/17 18:40:09 by ztawanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,17 @@ void	*eat_check(void *phil1)
 	{
 		if ((feeded = feeding(phils, phil, feeded)) == phils->n_of_philo)
 			return (NULL);
+		sem_wait(phil->sem);
 		if ((get_time() - phil->time_of_eat) > \
 			phils->time_to_die && phil->status != EAT)
 		{
-			sem_wait(phil->sem);
 			phil->status = DEAD;
 			mutex_print(phil, get_time());
 			phils->dead = 1;
 			sem_post(phils->sem_end);
 			return (NULL);
 		}
+		sem_post(phil->sem);
 	}
 	return (NULL);
 }

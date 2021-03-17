@@ -49,7 +49,11 @@ int		main(int argc, char **argv)
 		printf("Error: incorrect arguments.\n");
 		return (0);
 	}
-	start_threads(&phils);
+	if (start_threads(&phils))
+	{
+		printf("Error: threads creating error.\n");
+		return (0);
+	}
 	sem_wait(phils.sem_end);
 	ft_clear(&phils);
 	return (0);
