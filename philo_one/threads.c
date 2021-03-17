@@ -71,13 +71,13 @@ void	eat(t_phil *phil)
 	mutex_print(phil, get_time());
 	pthread_mutex_lock(&phil->mutex_f);
 	mutex_print(phil, get_time());
+	pthread_mutex_lock(&phil->mutex);
 	phil->status = EAT;
+	phil->n_of_eats++;
+	pthread_mutex_unlock(&phil->mutex);
 	mutex_print(phil, get_time());
 	phil->time_of_eat = get_time();
 	skip_time(phil->phils->time_to_eat);
-	pthread_mutex_lock(&phil->mutex);
-	phil->n_of_eats++;
-	pthread_mutex_unlock(&phil->mutex);
 	pthread_mutex_unlock(&phil->mutex_f);
 	pthread_mutex_unlock(&phil->prev->mutex_f);
 }

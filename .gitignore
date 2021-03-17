@@ -8,3 +8,4 @@ philo_three
 *.o
 /socrates
 */*.dSYM
+.DS_Store
